@@ -35,12 +35,22 @@ app.post('/snippet', (req, res) => {
 app.get('/snippet', (req, res) => {
   const { lang } = req.query
 
+  /* Exact match
   if (lang) {
     const filteredSnippets = snippets.filter(
       snippet => snippet.language.toLowerCase() === lang.toLowerCase()
     )
     return res.json(filteredSnippets)
-  }
+  }*/
+
+  //Stretch goal: Filters for a partial match with regular expressions
+  if (lang) {
+    const regex = new RegExp(lang, "gi")
+    const filteredSnippets = snippets.filter(
+      snippet => snippet.language.match(regex)
+    )
+    return res.json(filteredSnippets)
+    }
 
   res.json(snippets)
 })
@@ -55,6 +65,51 @@ app.get('/snippet/:id', (req, res) => {
   }
 
   res.json(snippet)
+})
+
+//Stretch tasks
+
+// edit a snippet by ID
+app.put('/snippet/:id', (req, res) => {
+  const snippetId = parseInt(req.params.id)
+  const {language, code} = req.body
+  let foundIndex = -1
+  snippets.map((s, index) => {
+    if (s.id == snippetId){
+      foundIndex = index
+    } 
+    return s
+  })
+  if (foundIndex == -1){
+    res.status(404).json("error: 'Snippet not found, not able to be updated")
+  } else {
+    snippets.splice(foundIndex, 1, {
+      "id":foundIndex+1,
+      "language":language,
+      "code":code
+    })
+  }
+  res.status(200).json(`Snippet with id=${snippetId} updated to {language: ${snippets[foundIndex].language}, code: ${snippets[foundIndex].code}}`)
+})
+
+//delete a snippet by ID
+app.delete('/snippet/:id', (req, res) => {
+  const snippetId = parseInt(req.params.id)
+  const {language, code} = req.body
+  let foundIndex = -1
+  snippets.map((s, index) => {
+    if (s.id == snippetId){
+      foundIndex = index
+    } 
+    return s
+  })
+  if (foundIndex == -1){
+    res.status(404).json("error: 'Snippet not found, not able to be deleted")
+  } else{
+    snippets.splice(foundIndex, 1)
+    console.log(snippets)
+  }
+  res.status(200).json(`Snippet with id=${snippetId} deleted`)
 })
 
 // start the server
