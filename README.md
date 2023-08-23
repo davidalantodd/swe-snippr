@@ -57,12 +57,12 @@ require handling? Anything more we could do to improve validation?
 ### Make some requests
 
 If you `npm i && npm run dev` you should be able to hit the API at
-`localhost:5000`
+`localhost:4000`
 
 Try getting a single snippet with
 
 ```bash
-curl -v -XGET 'http://localhost:5000/snippet/3' | json_pp
+curl -v -XGET 'http://localhost:4000/snippet/3' | json_pp
 ```
 
 Does it work? What do you see in the request and response? (N.b. in the output
@@ -74,13 +74,13 @@ Why did we choose `/3` and not `?id=3`? Which is the better implementation? Why?
 Try getting many snippets with
 
 ```bash
-curl -v -XGET 'http://localhost:5000/snippet' | json_pp
+curl -v -XGET 'http://localhost:4000/snippet' | json_pp
 ```
 
 and
 
 ```bash
-curl -v -XGET 'http://localhost:5000/snippet?lang=python' | json_pp
+curl -v -XGET 'http://localhost:4000/snippet?lang=python' | json_pp
 ```
 
 What other query params could we provide to the users to make their life easier?
@@ -95,7 +95,7 @@ Try creating a snippet with
 curl -v -XPOST \
 -H "Content-type: application/json" \
 -d '{ "code" : "print(2 + 2)", "language" : "Python" }' \
-'http://localhost:5000/snippet' | json_pp
+'http://localhost:4000/snippet' | json_pp
 ```
 
 The API sends back the created resource! Why might this be useful for users of
