@@ -43,7 +43,6 @@ function decrypt(input) {
   const decipher = crypto.createDecipheriv(algo, key, iv)
   let decryptedText = decipher.update(encryptedText, 'hex', 'utf-8')
   decryptedText += decipher.final('utf8')
-
   return decryptedText
 }
 

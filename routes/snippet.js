@@ -48,13 +48,10 @@ route.get('/', (req, res) => {
   console.log("encrypted code snippets that are stored", snippets)
 
   // decrypt all snippets
-  const decodedSnippets = snippets.map(snippet => {
-    console.log(snippet)
-    return ({
-    ...snippet,
+  const decodedSnippets = snippets.map(snippet => ({
+     ...snippet,
     code: decrypt(snippet.code)
-  });
-})
+  }))
 
   // handle query strings
   // if (lang) {
@@ -82,17 +79,15 @@ route.get('/', (req, res) => {
  */
 route.get('/:id', (req, res) => {
   const snippetId = parseInt(req.params.id)
-  const snippet = snippets.find(snippet => snippet.id === snippetId)
+  let snippet = snippets.find(snippet => snippet.id === snippetId)
 
   console.log("encrypted code snippet that is stored", snippet)
 
   if (!snippet) {
     return res.status(404).json({ error: 'Snippet not found' })
-    
   }
-
   // decrypt before sending back
-  snippet.code = decrypt(snippet.code)
+  snippet = {...snippet, 'code': decrypt(snippet.code)}
  
   console.log("decrypted code from get request that will be sent as a response: ", snippet)
 
@@ -118,10 +113,11 @@ route.put('/:id', (req, res) => {
   } else {
     snippets.splice(foundIndex, 1, {
       ...snippets[foundIndex],
+      "language": language,
       "code": encrypt(code)
     })
   }
-  console.log(snippets)
+
   res.status(200).json(`Snippet with id=${snippetId} updated to {language: ${snippets[foundIndex].language}, code: ${snippets[foundIndex].code}}`)
 })
 
