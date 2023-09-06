@@ -7,6 +7,13 @@ const authorize = require('../middleware/authorize')
 // array to store users
 const users = []
 
+/* To test this, we want to create an authorization header, we can do this through
+    echo -n 'test@user.com:password123' | base64
+      this will give us 'dGVzdEB1c2VyLmNvbTpwYXNzd29yZDEyMw=='
+    echo -n 'secondtime@user.com:password123456' | base64
+      c2Vjb25kdGltZUB1c2VyLmNvbTpwYXNzd29yZDEyMzQ1Ng==
+  */
+
 /**
  * Create a user (sign up)
  */
@@ -55,7 +62,9 @@ route.post('/login', basicAuth, async (req, res) => {
   const payload = { id: user.id, email: user.email }
 
   // sign and encode the payload to create the token
-  const accessToken = jwt.sign(payload, process.env['TOKEN_SECRET'])
+  const accessToken = jwt.sign(payload, process.env['TOKEN_SECRET'])  //authentication example!
+  console.log("JWT:", accessToken)
+  console.log(process.env['TOKEN_SECRET'])
 
   // send the token back for storage on the client
   res.json({ accessToken })

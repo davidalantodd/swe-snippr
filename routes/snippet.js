@@ -3,7 +3,12 @@ const authorize = require('../middleware/authorize')
 const { encrypt, decrypt } = require('../utils/encrypt')
 
 // array to store snippets
-const snippets = require('./seedData.json')
+const snippets = require('../seedData.json')
+
+//encrypt each code snippet in initial array
+snippets.map((snippet, index) => {
+  snippets[index] = {...snippet, code: encrypt(snippet.code)}
+})
 
 // generate a unique ID for each snippet
 let id = snippets.length + 1
@@ -67,14 +72,14 @@ route.get('/', authorize, (req, res) => {
  */
 route.get('/:id', authorize, (req, res) => {
   const snippetId = parseInt(req.params.id)
-  const snippet = snippets.find(snippet => snippet.id === snippetId)
+  let snippet = snippets.find(snippet => snippet.id === snippetId)
 
   if (!snippet) {
     return res.status(404).json({ error: 'Snippet not found' })
   }
 
   // decrypt before sending back
-  snippet.code = decrypt(snippet.code)
+  snippet = {...snippet, 'code': decrypt(snippet.code)}
   res.json(snippet)
 })
 
