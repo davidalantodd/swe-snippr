@@ -10,7 +10,7 @@ const config = {
   authRequired: false,
   auth0Logout: true,
   secret: process.env['TOKEN_SECRET'],
-  baseURL: 'http://localhost:5000',
+  baseURL: 'http://localhost:4000',
   clientID: 'pBrHu7U6eYvmrOMpbagfzUyH1iDEvcxR',
   issuerBaseURL: 'https://dev-nxyejtxm.us.auth0.com'
 }
