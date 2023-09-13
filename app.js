@@ -9,10 +9,10 @@ const PORT = 4000
 const config = {
   authRequired: false,
   auth0Logout: true,
-  secret: process.env['TOKEN_SECRET'],
+  secret: process.env['TOKEN_SECRET'],  // (can generate random --> openssl rand -base64 32)
   baseURL: 'http://localhost:4000',
-  clientID: 'pBrHu7U6eYvmrOMpbagfzUyH1iDEvcxR',
-  issuerBaseURL: 'https://dev-nxyejtxm.us.auth0.com'
+  clientID: process.env['CLIENT_ID'], //need to change this to my personal client ID
+  issuerBaseURL: process.env['ISSUER_BASE_URL'] // need to change this to my application's issuer base URL
 }
 
 app.use(express.json())
